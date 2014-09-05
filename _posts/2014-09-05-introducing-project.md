@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Introducing Poole
+title: Introducing Project
 ---
 
 Welcome to the blog of Attitude Analytiks. Check here for regular updates of our project.
