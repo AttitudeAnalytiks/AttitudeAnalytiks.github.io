@@ -428,33 +428,4 @@ a.pagination-item:hover {
     border-bottom-right-radius: 4px;
   }
   
-  nav {
-  text-align: center;
-}
-
-nav ul {
-  list-style-type: none;
-  display: inline;
-  background-color: #265F92;
-  margin: 0;
-  padding: 0 0 5px 0;
-  -webkit-box-shadow: 0 6px 6px -6px #444;
-  -moz-box-shadow: 0 6px 6px -6px #444;
-  box-shadow: 0 6px 6px -6px #444;
-}
-
-nav li {
-  display: inline;
-  margin: 1em;
-}
-
-nav a {
-  text-decoration: none;
-  color: white;
-}
-
-nav a:hover {
-  text-decoration: none;
-  color: #FFA300;
-}
 }
