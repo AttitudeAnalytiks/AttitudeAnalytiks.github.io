@@ -3,38 +3,16 @@ layout: post
 title: Introducing Poole
 ---
 
-*The Strange Case of Dr. Jekyll and Mr. Hyde* tells the story of a lawyer investigating the connection of two persons, Dr. Henry Jekyll and Mr. Edward Hyde. Chief among the novel's supporting cast is a man by the name of Mr. Poole, Dr. Jekyll's loyal butler.
+Welcome to the blog of Attitude Analytiks. Check here for regular updates of our project.
 
------
+---- 
 
-Poole is the butler for [Jekyll](http://jekyllrb.com), the static site generator. It's designed and developed by [@mdo](https://twitter.com/mdo) to provide a clear and concise foundational setup for any Jekyll site. It does so by furnishing a full vanilla Jekyll install with example templates, pages, posts, and styles.
+AttitudeAnalytiks is currently comprised of three students and one awesome professor who are all looking forward to working on this project:
+•	Logan Sullivan
+•	Kelly O'Conor
+•	Thomas Warring
+•	Dr. Thomas Way
 
-There are currently two themes built on Poole:
+Our Project:
+Sentiment analysis is an active and growing field with uses that include academic research and business marketing. The goal of our project is to provide users of our finished product with an implementation of sentiment analysis performed on historical or real-time data collected from various social media and news outlet sources. We will develop a web based application to measure and track the collective attitude and sentiment of a representative Internet population on a particular topic using multiple data sources, such as Twitter, online newspapers and Google search results. Our sentiment analysis engine will be implemented using Python and NLTK with results of the analysis being visually presented graphically and dynamically using HTML, JavaScript, Ajax and jQuery.
 
-* [Hyde](http://hyde.getpoole.com)
-* [Lanyon](http://lanyon.getpoole.com)
-
-Learn more and contribute on [GitHub](https://github.com/poole).
-
-### What's included
-
-Poole is a streamlined Jekyll site designed and built as a foundation for building more meaningful themes. Poole, and every theme built on it, includes the following:
-
-* Complete Jekyll setup included (layouts, config, [404](/404.html), [RSS feed](/atom.xml), posts, and [example page](/about))
-* Mobile friendly design and development
-* Easily scalable text and component sizing with `rem` units in the CSS
-* Support for a wide gamut of HTML elements
-* Related posts (time-based, because Jekyll) below each post
-* Syntax highlighting, courtesy Pygments (the Python-based code snippet highlighter)
-
-Additional features are available in individual themes.
-
-### Browser support
-
-Poole and it's themes are by preference a forward-thinking project. In addition to the latest versions of Chrome, Safari (mobile and desktop), and Firefox, it is only compatible with Internet Explorer 9 and above.
-
-### Download
-
-Poole is developed on and hosted with GitHub. Head to the <a href="https://github.com/poole/poole">GitHub repository</a> for downloads, bug reports, and features requests.
-
-Thanks!
