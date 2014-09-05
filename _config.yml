@@ -24,7 +24,6 @@ github:
 #page lists
 pages_list:       
   About: '/about'
-  CSC 4790: csc.villanova.edu/~joyce/csc4790/f14/index.html
   Archive: '/archive'
   Feed: '/atom.xml'
   
