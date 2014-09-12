@@ -24,8 +24,7 @@ Some of the papers we all read were:
  Do we use and train a Naive Bayes classifier, or do we try a SVM? There are a couple of different routes to go and we need to look more into the capabilities of NLTK and different API's
  to see what would be the most efficient for what we are trying to do. 
  
- We also learned of a couple of different problems predominating in the research community: sentiment classification, feature based classification, and handling negations and sarcasm.
- Again, areas for more research and exploration. 
+ We also learned of a couple of different problems predominating in the research community: different classifing methods and handling negations and sarcasm. Again, areas for more research and exploration. 
  
  Finally, we have decided that as another visualization. We are going to try and implement a heat map. Showing not only sentiement towards a particular term, but also geographic location.
  
