@@ -13,16 +13,17 @@ Some of the papers we all read were:
 
 From reading these papers, we got more familiar with a couple of NLP (natural language processing) techniques, along with 
 some more specific uses for Python & NLTK in sentiment analysis. 
- 
- ## Cupidatat 90's lo-fi authentic try-hard
- As with anything, understanding the terminology is very important.So, Here is our sentiement analysis word of the week!
- An important piece of sentiment analysis terminology is a "feature" 
+
+## Word of the Week
+
+ As with anything, understanding the terminology is very important. **So, Here is our sentiement analysis word of the week!**
+ An important piece of sentiment analysis terminology is a **"feature" **
 “Features” are whatever you’re analyzing in an
  attempt to correlate to the labels. For example, in some cases of sentiment analysis, the features will be the words in each 
  tweet. Other algorithms could use different types of features — some algorithms use bigrams or trigrams 
  (strings of two or three consecutive words, respectively) as the features. It all depends on what algorithm we decide to use.
- 
- ### What to Do Next
+
+### What to Do Next
  From there, we must chose a classifier. Here is where the next portion of our research is going to come in.
  Do we use and train a Naive Bayes classifier, or do we try a SVM? There are a couple of different routes to go and we need to look more into the capabilities of NLTK and different API's
  to see what would be the most efficient for what we are trying to do. 
