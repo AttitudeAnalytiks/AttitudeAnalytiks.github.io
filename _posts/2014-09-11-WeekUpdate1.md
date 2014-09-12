@@ -14,7 +14,7 @@ Some of the papers we all read were:
 From reading these papers, we got more familiar with a couple of NLP (natural language processing) techniques, along with 
 some more specific uses for Python & NLTK in sentiment analysis. 
  
- ### Word of the Week 
+ ## Cupidatat 90's lo-fi authentic try-hard
  As with anything, understanding the terminology is very important.So, Here is our sentiement analysis word of the week!
  An important piece of sentiment analysis terminology is a "feature" 
 “Features” are whatever you’re analyzing in an
