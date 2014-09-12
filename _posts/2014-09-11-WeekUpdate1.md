@@ -7,15 +7,14 @@ The theme of the week was research. After reading a couple of white papers, incl
 a better understanding as to the challenges of performing sentiment analysis effectively, and also the countless ways to do so. 
 
 Some of the papers we all read were: 
-* Some [Dr. Way](http://www.csc.villanova.edu/~tway/publications/IKE7710_Carpenter_Way.pdf)
-* Some [other] (http://www.dmi.unict.it/~faro/tesi/sentiment_analysis/SA2.pdf)
-* Some [other2](http://kaikuehne.github.io/war/Pak%20and%20Paroubek%20(2010).%20Twitter%20as%20a%20Corpus%20for%20Sentiment%20Analysis%20and%20Opinion%20Mining.pdf)
-
+* [Dr. Way's Research Paper](http://www.csc.villanova.edu/~tway/publications/IKE7710_Carpenter_Way.pdf)
+* [Sentiment Analysis] (http://www.dmi.unict.it/~faro/tesi/sentiment_analysis/SA2.pdf)
+* [Opinion Mining](http://kaikuehne.github.io/war/Pak%20and%20Paroubek%20(2010).%20Twitter%20as%20a%20Corpus%20for%20Sentiment%20Analysis%20and%20Opinion%20Mining.pdf)
 
  From reading these papers, we got more familiar with a couple of NLP (natural language processing) techniques, along with 
- some more specific uses for sentiment analysis. 
+ some more specific uses for Python & NLTK in sentiment analysis. 
  
-As with anything, understanding the terminology is very important.  An important piece of sentiment analysis terminology is a "feature" 
+ As with anything, understanding the terminology is very important.  An important piece of sentiment analysis terminology is a "feature" 
 “Features” are whatever you’re analyzing in an
  attempt to correlate to the labels. For example, in some cases of sentiment analysis, the features will be the words in each 
  review. Other algorithms could use different types of features — some algorithms use bigrams or trigrams 
