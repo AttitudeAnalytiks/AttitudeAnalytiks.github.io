@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 
+title: Week 2 Update
 ---
 
 
