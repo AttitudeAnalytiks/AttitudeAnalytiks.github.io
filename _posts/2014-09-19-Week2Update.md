@@ -14,7 +14,7 @@ This week, as team, we continued to do more **research**. Luckily, this time it 
 **Logan**:  started writing our report & read more papers about opinion mining and sentiment analysis 
 
 ## Word of the Week
- Last week, on our list of tasks to do next, we mentioned picking a ** Classifier **.  Machine learning has various methods to classify data. Classifiers may or may not need training data. Fortunately for us, NLTK defines several classifier classes:  ConditionalExponentialClassifier, DecisionTreeClassifier, MaxentClassifier, NaiveBayesClassifier, WekaClassifier. This potentially adds another "research element" to our project, which classifier is the most accurate and efficient. 
+ Last week, on our list of tasks to do next, we mentioned picking a **Classifier**.  Machine learning has various methods to classify data. Classifiers may or may not need training data. Fortunately for us, NLTK defines several classifier classes:  ConditionalExponentialClassifier, DecisionTreeClassifier, MaxentClassifier, NaiveBayesClassifier, WekaClassifier. This potentially adds another "research element" to our project, which classifier is the most accurate and efficient. 
 
 [NLTK HOW TO](http://www.nltk.org/howto/classify.html)
 
