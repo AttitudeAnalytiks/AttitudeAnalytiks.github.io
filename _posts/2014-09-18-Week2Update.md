@@ -7,11 +7,11 @@ This week, as team, we continued to do more **research**. Luckily, this time it 
 
 ## What we Did
 
-**Tom: ** brushed up on Python skills & finally set up GitHub account!
+**Tom**: brushed up on Python skills & finally set up GitHub account!
 
-**Kelly: ** wrote a simple pre-processing script for Tweets, pulling out "stop words" and putting into a feature vector and started to play around with different classifier demos available from the NLTK Cookbook
+**Kelly**:wrote a simple pre-processing script for Tweets, pulling out "stop words" and putting into a feature vector and started to play around with different classifier demos available from the NLTK Cookbook
 
-**Logan: **  started writing our report & read more papers about opinion mining and sentiment analysis 
+**Logan**:  started writing our report & read more papers about opinion mining and sentiment analysis 
 
 ## Word of the Week
  Last week, on our list of tasks to do next, we mentioned picking a ** Classifier **.  Machine learning has various methods to classify data. Classifiers may or may not need training data. Fortunately for us, NLTK defines several classifier classes:  ConditionalExponentialClassifier, DecisionTreeClassifier, MaxentClassifier, NaiveBayesClassifier, WekaClassifier. This potentially adds another "research element" to our project, which classifier is the most accurate and efficient. 
