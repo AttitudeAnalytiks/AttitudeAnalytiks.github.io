@@ -1,7 +1,7 @@
   
 ---
 layout: page
-title: Email
+title: WebApp
 ---
   
   add html for d3 visualization 
