@@ -1,0 +1,562 @@
+<html>
+<head>
+        <title>Sentiment Tracker</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<script src="/js/jquery-1.7.2.js" type="text/javascript" ></script>
+	<script src="/js/jquery.datePicker.js" type="text/javascript" ></script>
+	<script src="/js/date.js" type="text/javascript" ></script>
+        <script src="/js/date.format.js" type="text/javascript" ></script>
+	<script language="javascript" type="text/javascript" src="/js/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="/js/jquery.flot.threshold.js"></script>
+	<script language="javascript" type="text/javascript" src="/js/curvedLines.js"></script>
+	<script type="text/javascript" src="/js/jquery.alerts.js"></script>
+	<script src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/swfobject.js"></script>
+	<script type="text/javascript" src="/js/downloadify.min.js"></script>
+	<script type="text/javascript" src="/js/freq.js"></script>
+
+	<script src="/js/jqcloud-1.0.0.js" type="text/javascript"></script>
+	<LINK REL=StyleSheet HREF="/css/jqcloud.css" TYPE="text/css" MEDIA=screen>
+
+
+	<link href="/css/base.css" rel="stylesheet" type="text/css" />
+	<link href="/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="/css/datePicker.css" rel="stylesheet" type="text/css" />	
+	<link rel="stylesheet" href="/css/jquery.alerts.css" type="text/css" media="screen" /> 
+	<link href="/css/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
+	<script>
+        $(document).ready(function() {
+            $("#progressbar").progressbar({ value: 0 });
+            var d = new Date();
+            $( "#endDate" ).val(d.format("mm/dd/yyyy"));
+            d.setMonth(d.getMonth() - 3);
+            $( "#startDate" ).val(d.format("mm/dd/yyyy"));
+        });
+	</script>
+
+        <script type="text/javascript">
+        <!--
+
+	    var endDate;
+	    var interval;
+	    var intervalAmount;
+	    var count = 0;
+
+	    var	tweetData = '"Date","Author","Tweet","Positive","Negative","Words","URL"';
+	    var tweetText = " "
+	    var searchTerm;
+	    var numTweets;
+	    var accuracy;
+	    var posCounter=0;
+	    var negCounter=0;
+	    var date1;
+	    var totalCalls = 0;
+	    var currentCall = 0;
+	    var timeout = 30;
+
+	    var xmlhttp;
+		
+	    var finalNums = new Array();
+
+
+            function getData()
+            {
+		if (xmlhttp)		
+		{
+		    xmlhttp.abort();
+		    document.getElementById('stopButtonDiv').style.display = "none";
+		}
+		document.getElementById('downloadify').style.display = "none";
+		tweetData = '"Date","Author","Tweet","Positive","Negative","Words","URL"';
+	    	tweetText = " "
+		document.getElementById('stopButtonDiv').style.display = "block";
+		document.getElementById('FreqDiv').innerHTML = "Word Cloud";
+		document.getElementById('FreqDiv').style.display = "none";
+		document.getElementById('wordcloud').style.display = "none";
+		document.getElementById('placeholder').style.display = "block";
+		document.getElementById('resultContent').innerHTML = "";
+		document.getElementById('nums').innerHTML = ""; 
+		date1 =  new Date($.trim(document.getElementById('startDate').value));
+		endDate = new Date($.trim(document.getElementById('endDate').value));
+		searchTerm = $.trim(document.getElementById('search').value);
+		numTweets = parseInt(($.trim(document.getElementById('numTweets').value)));
+		interval = parseInt(($.trim(document.getElementById('interval').value)));
+		intervalAmount = $("#intervalAmount option:selected").val();
+		accuracy = parseInt($("#accuracy option:selected").val());	
+		timeout = parseInt(($.trim(document.getElementById('timeout').value)));
+
+		if(searchTerm == "") 
+		{
+		    jAlert('Please enter a Valid Search Term', 'Form Data Error');
+		}
+		else if (!date1 || date1 > Date.now())
+		{
+		    jAlert("Please enter a Valid Start Date", 'Form Data Error');
+		}
+		else if (!endDate || endDate > Date.now() )
+		{		
+		    jAlert("Please enter a Valid End Date", 'Form Data Error');
+		}
+		else if (date1 >= endDate)
+		{		
+		    jAlert("End Date cannot be before Start Date", 'Form Data Error');
+		}
+		else if (!interval)
+		{
+		    jAlert("Please enter a valid integer value for Interval", 'Form Data Error');
+		}
+		else if (!intervalAmount)
+		{
+		    jAlert("Please enter a valid integer value for Interval", 'Form Data Error');
+		}		
+		
+		else if (!numTweets)
+		{
+		    jAlert("Please enter a valid integer value for Desired Number of Tweets", 'Form Data Error');
+		}		
+		else if (!accuracy || accuracy >6 || accuracy < 1)
+		{
+		    jAlert("Please enter a valid integer value for Desired Accuracy", 'Form Data Error');
+		}		
+
+		else    
+		{
+		    var ONE_DAY = 1000 * 60 * 60 * 24;
+		    diff = Math.round((endDate.getTime() - date1.getTime())/ONE_DAY);
+		    if (intervalAmount == "days")
+		        totalCalls = diff / interval;
+		    if (intervalAmount == "weeks")
+		        totalCalls = diff / (interval*7);
+		    if (intervalAmount == "months")
+		        totalCalls = diff / (interval*30);
+		    if (intervalAmount == "years")
+		        totalCalls = diff / (interval*365);
+	    	    currentCall = 0;
+		    $( "#progressbar" ).progressbar( "option", "value", 0 );
+		    document.getElementById("progressSpan").innerHTML = "0%";
+
+
+		    finalNums = new Array();
+		    plotWithOptions(0);
+		    count = 0;
+		    callPY(date1);
+		}
+	    }
+
+	    function callPY(curDate)
+	    {
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                }
+                else
+                {// code for IE6, IE5
+
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xmlhttp.onreadystatechange=function()
+                {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                    {
+			var resultAry = xmlhttp.responseText;	
+			if (resultAry.substring(0, 5) == "ERROR" || resultAry.substring(0, 10) == "<!--: spam")
+			{
+				if (count % 2 == 0)
+				{
+				    document.getElementById( "resultContent" ).innerHTML += "<div id=outerDiv"+count+" class='transboxDark'>"+curDate.toDateString()+" -- Error -- Skipped</div>";
+				}
+				else
+				{
+				    document.getElementById( "resultContent" ).innerHTML += "<div id=outerDiv"+count+" class='transboxLight'>"+curDate.toDateString()+" -- Error -- Skipped</div>";
+				}
+				finalNums[count] = [curDate.getTime(),0];				
+			}
+			else
+			{
+				document.getElementById("errorDiv").innerHTML += "|||||||||||||||||||||||"+resultAry
+				//alert(resultAry);
+				jsonObj = eval("("+resultAry+")");
+				//alert(jsonObj);
+				posCounter = 0;
+				negCounter = 0;
+			
+				if (count % 2 == 0)
+				{
+				    document.getElementById( "resultContent" ).innerHTML += "<div id=outerDiv"+curDate.getTime()+" class='transboxDark'></div>";
+				}
+				else
+				{
+				    document.getElementById( "resultContent" ).innerHTML += "<div id=outerDiv"+curDate.getTime()+" class='transboxLight'></div>";
+				}
+
+				for(var i in jsonObj){
+				    if (i == 'tweets')
+				    {
+					document.getElementById( "outerDiv"+curDate.getTime() ).innerHTML += "<a name = Adiv"+curDate.getTime()+" id=div"+curDate.getTime()+"Text href=javascript:toggle('div"+curDate.getTime()+"');>Show Tweets</a>"
+					document.getElementById( "outerDiv"+curDate.getTime() ).innerHTML +=  "<div id=div"+curDate.getTime()+" style='display: none'></div>";
+					for (t in jsonObj[i])
+					{
+					    var d = new Date(jsonObj[i][t][4]*1000);
+					    var author = jsonObj[i][t][5];
+					    var url = jsonObj[i][t][6];
+
+					    posCounter += jsonObj[i][t][1];
+					    negCounter += jsonObj[i][t][2]; 
+					    if (jsonObj[i][t][1] + jsonObj[i][t][2] > accuracy)
+					    {
+						document.getElementById( "div"+curDate.getTime() ).innerHTML +=  "<p class='posTweet' style='color:green'><font color='#000'>"+d.toDateString()+ " -- "+author+"</font><br/>"+jsonObj[i][t][0]+ "  Pos:"+ jsonObj[i][t][1]+"  Neg:"+jsonObj[i][t][2]+"<br />\t"+jsonObj[i][t][3]+"<br/><a target='_blank' href = '"+url+"'>"+url+"</a></p>";
+
+tweetData = tweetData + '\n'+d.toDateString()+',"'+author+'","'+jsonObj[i][t][0]+'",'+jsonObj[i][t][1]+','+jsonObj[i][t][2]+',"'+jsonObj[i][t][3]+'","'+url+'"';
+tweetText = tweetText + ' '+ jsonObj[i][t][0];
+//alert(tweetData);
+						showTweets("posTweet");
+					    }
+					    else if (jsonObj[i][t][1] + jsonObj[i][t][2] < -accuracy)
+					    {
+						document.getElementById( "div"+curDate.getTime() ).innerHTML +=  "<p class='NegTweet' style='color:red'><font color='#000'>"+d.toDateString()+ " -- "+author+"</font><br/>"+jsonObj[i][t][0]+ "  Pos:"+ jsonObj[i][t][1]+"  Neg:"+jsonObj[i][t][2]+"<br />\t"+jsonObj[i][t][3]+"<br/><a target='_blank' href = '"+url+"'>"+url+"</a></p>";
+
+
+tweetData = tweetData + '\n'+d.toDateString()+',"'+author+'","'+jsonObj[i][t][0]+'",'+jsonObj[i][t][1]+','+jsonObj[i][t][2]+',"'+jsonObj[i][t][3]+'","'+url+'"';
+tweetText = tweetText + ' '+ jsonObj[i][t][0];
+//alert(tweetData);
+
+						showTweets("negTweet");
+					    }
+
+					    else
+					    {
+					        document.getElementById( "div"+curDate.getTime() ).innerHTML +=  "<p class='neutTweet'><font color='#000'>"+d.toDateString()+ " -- "+author+"</font><br/>"+jsonObj[i][t][0]+ "  Pos:"+ jsonObj[i][t][1]+"  Neg:"+jsonObj[i][t][2]+"<br />\t"+jsonObj[i][t][3]+"</p>";
+tweetData = tweetData + '\n'+d.toDateString()+',"'+author+'","'+jsonObj[i][t][0]+'",'+jsonObj[i][t][1]+','+jsonObj[i][t][2]+',"'+jsonObj[i][t][3]+'","'+url+'"';
+tweetText = tweetText + ' '+ jsonObj[i][t][0];
+						showTweets("neutTweet");						    
+					    }
+
+
+					}
+				    }
+				    else
+				    {
+					document.getElementById( "outerDiv"+curDate.getTime() ).innerHTML += "&nbsp&nbsp&nbsp&nbsp" + jsonObj[i] + " &nbsp&nbsp&nbsp&nbsp ";
+				    }
+				}
+			
+				document.getElementById("outerDiv"+curDate.getTime()).innerHTML += "&nbsp&nbsp&nbsp&nbsp" + (posCounter+negCounter);
+				finalNums[count] = [curDate.getTime(),(posCounter+negCounter)];				
+				if (count > 1)
+				{
+					//alert(count)
+	    				plotWithOptions(0);
+				}				
+				else
+				{
+					//alert(count)
+					plotFirst(0);					
+				}	
+			}
+			currentCall =  currentCall + 1;
+			$( "#progressbar" ).progressbar( "option", "value", ((currentCall/totalCalls)*100) );
+			if (((currentCall/totalCalls)*100) >= 100)
+			    document.getElementById("progressSpan").innerHTML = "100%";
+			else
+			    document.getElementById("progressSpan").innerHTML = ((currentCall/totalCalls)*100).toFixed(0)+"%";
+			count = count + 1;
+			if(intervalAmount=="days")		
+			    curDate.setDate(curDate.getDate()+parseInt(interval));
+			if(intervalAmount=="weeks")		
+			    curDate.setDate(curDate.getDate()+(parseInt(interval)*7));
+			if(intervalAmount=="months")		
+			    curDate.setMonth(curDate.getMonth() + parseInt(interval));
+			if(intervalAmount=="years")
+			    curDate.setYear(curDate.getFullYear() + parseInt(interval));
+
+			//curDate.setDate(curDate.getDate()+parseInt(interval));
+			if(endDate <= curDate)
+			{
+				jAlert ("Done","Done");
+		    		document.getElementById('stopButtonDiv').style.display = "none";
+		    		document.getElementById('downloadify').style.display = "block";
+				document.getElementById('FreqDiv').style.display = "block";
+			}
+			else
+			{
+				callPY(curDate);
+			}
+                    }
+                }
+		var curDateStr = curDate.getFullYear()+"-"+(curDate.getMonth()+1)+"-"+ curDate.getDate();
+                xmlhttp.open("POST","/cgi-bin/topsyDriver.py?search="+searchTerm+"&date="+curDateStr+"&interval="+interval+"&intervalAmount="+intervalAmount+"&numTweets="+numTweets+"&accuracy="+accuracy+"&timeout="+timeout,true);
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send( ); 
+            }
+
+
+    function toggle(divID) {
+	var ele = document.getElementById(divID);
+	var text = document.getElementById(divID+"Text");
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		text.innerHTML = "Show All Tweets";
+  	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "Hide Tweets";
+	    	//window.location.hash="A"+divID;
+	}
+    }
+
+    function plotWithOptions(t) {
+        var plot = $.plot($("#placeholder"), [ {
+            data: finalNums,
+ 	    //color: "rgb(100, 160, 180)",
+ 	    color: "rgb(70, 70, 70)",
+            threshold: { below: t, color: "rgb(200, 20, 30)" },
+	    curvedLines: { show: true, lineWidth: 3 }
+        }, 
+	{data: finalNums,   	    
+	    color: "rgb(30, 180, 20)",
+            threshold: { below: t, color: "rgb(200, 20, 30)" },
+	    points: { show: true}}
+	], 
+	    { xaxis: { mode: "time" },
+	    series: {
+		   curvedLines: { active: true }
+               },
+               grid: { hoverable: true, clickable: true }
+	});
+    }
+    function plotFirst(t) {
+        var plot = $.plot($("#placeholder"), [ {
+            data: finalNums,
+ 	    color: "rgb(30, 180, 20)",
+            //threshold: { below: t, color: "rgb(200, 20, 30)" }
+        }], 
+	    { xaxis: { mode: "time" },
+	    series: {
+		   lines: { show: true },
+		   points: { show: true }
+               },
+               grid: { hoverable: true, clickable: true }
+	});
+    }
+
+
+
+
+$(function () {
+    	//finalNums = [[1,20], [2,-60], [3,null], [4, 20], [5,80]];
+    plotWithOptions(0);
+
+    $("#placeholder").bind("plotclick", function (event, pos, item) {
+        if (item) {
+	    //alert (item.datapoint[0]); // This is the one you want -- it is the first parameter--the timestamp
+	    toggle("div"+item.datapoint[0]);
+        }
+    });
+
+});
+       -->
+        </script>
+	
+</head>
+
+<body onload="load();">
+
+<!---   NEW NEW NEW --->
+
+		<script type="text/javascript">
+			function load(){
+				Downloadify.create('downloadify',{
+					filename: function(){
+						return "tweetData.csv";
+					},
+					data: function(){
+						return tweetData; 
+						//return document.getElementById('data').value;
+					},
+					onComplete: function(){ alert('Your File Has Been Saved!'); },
+					onCancel: function(){ alert('You have cancelled the saving of this file.'); },
+					onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); },
+					swf: '/media/downloadify.swf',
+					downloadImage: '/images/export.png',
+					width: 100,
+					height: 30,
+					transparent: true,
+					append: false
+				});
+			}
+		</script>
+
+<!--- END END END --->
+
+
+<script>
+function saveData()
+{
+	var ele = document.getElementById("saveData");
+	var text = document.getElementById("saveDataText");
+    	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		text.innerHTML = "Save Tweet Data ";
+  	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "Hide Save Data";
+	}	
+	
+}
+
+function exportToFile()
+{
+
+}
+function advanced()
+{
+	var ele = document.getElementById("advanced");
+	var formDiv = document.getElementById("formDiv");
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		formDiv.style.background ="url(/images/FormBackground2.jpg) no-repeat center";
+		formDiv.style.height = 195;
+  	}
+	else {
+		ele.style.display = "block";
+		formDiv.style.background ="url(/images/FormBackground3.jpg) no-repeat center";
+		formDiv.style.height = 220;
+	}
+
+}
+function stopSearch()
+{
+    if (xmlhttp)		
+    {
+	xmlhttp.abort();
+	document.getElementById('stopButtonDiv').style.display = "none";
+    }
+
+}
+
+</script>
+
+<script>
+	Date.format = 'mm/dd/yyyy';
+	$(function() {
+		$( "#startDate" ).datePicker({startDate:'01/01/1996'});
+	});
+	$(function() {
+		$( "#endDate" ).datePicker({startDate:'01/01/1996'});
+	});	
+	
+
+function showTweets(super_id)
+{
+	if(!(document.getElementById(super_id).checked))
+	{
+		$("."+super_id).css("display","none");
+	}
+	else
+	{
+		$("."+super_id).css("display","block");	
+	}
+
+}
+	
+	</script>	
+	<div id ="header" style = "background: url(../../images/bg.png) repeat-x; height:190; width:3000; position:fixed; left:0; top:0;">
+<!---background: url(../../images/bg.png) repeat-x left; height:190;--->
+		<div class="title">
+		    <h1>Sentiment Logo</h1>
+		</div>
+	</div>
+		
+		
+            <div class="content" style ="margin-top: 220;" data-role="frame-container">
+								
+
+				
+	    <div id="placeholder" style="position: fixed; margin-top:0; float: left; background: url(/images/twitterBird.png) no-repeat center; width:600px;height:300px;"></div>
+	    <div id="wordcloud" style="position: fixed; display:none; margin-top:0; float: left; background:url(/images/cloud3.png) no-repeat center;background-size:600px 300px; width:600px;height:300px;"></div>
+
+<a href="javascript:toggleFreq();" id="FreqDiv" style="display:none; position: fixed; margin-top:0; top:600;">Word Cloud</a>
+
+<div id="progressbar" style ="position: fixed; margin-top: 310; margin-left: 165; width:300px;"><span id = "progressSpan" style="color: gray; position:absolute; margin-left:140px; margin-top:8px">0%</span></div>
+	    <div id="stopButtonDiv" style="display:none; position: fixed; margin:360 0 0 290; ">
+		<input type="button" onclick="stopSearch()" value="Stop" />
+	    </div>
+
+				
+	    <div style="float: right; width:586px; margin-left:20; margin-top:0;">
+	    <div id="formDiv" style="width:586px; height:195; background: url(/images/FormBackground2.jpg) no-repeat center; padding-top: 10;">
+
+		<form id="searchForm" style="width:500; margin-left:auto; margin-right:auto;" >
+			<p style="text-align:center"><input size="40" id="search" type="text"></p>
+			<div style="width:500; margin: 0 auto;">
+			<span style="float:left; width:170; "><label>Start Date:</label><input type="text" id="startDate" value=""></span>
+			<span style="float:right; width:170; "><label>End Date:</label><input type="text" id="endDate" value=""></span>
+			</div>
+			<div style="width:500; padding-top: 60;">
+
+			<span id ="intervalSpan">
+				Every <input type="text" id="interval" value="3" size="1">
+				<select id="intervalAmount">
+                                <option value="days">Day(s)</option>
+				<option value="weeks" selected >Week(s)</option>
+                                <option value="months">Month(s)</option>
+                                <option value="years">Year(s)</option>
+				</select>			
+			</span>
+
+			<span title="Number of Tweets to return per Interval" style="width: 130; margin: 0 auto;"><label style="margin-left:30;"># Tweets: </label><input type="text" size = "1" id="numTweets" value="15"></span>
+			<span title="Accuracy of Tweets (1-5)" style="width: 160; float:right"><label>Accuracy: </label>
+				<select id="accuracy">
+				<option value="2">Low</option>
+				<option value="3" selected>Medium</option>
+				<option value="4">High</option>
+				</select>
+			</span>
+			</div>
+
+			<div style="margin-top:10">
+			<span id="downloadify" style= "float:right; display:none;">
+				You must have Flash 10 installed to download this file.
+			</span>
+				<span style="float:left"><a href="javascript:advanced();">Advanced</a></span>
+				<span style="float:left; margin-left:135;">
+					<input type="button" onclick="getData()" value="Search" />
+				</span>
+
+			</div>
+			<div id = "advanced" style="display:none; width:500; margin: 40 auto;">
+				<span style="float:left; width:170; "><label>Timeout:</label><input type="text" id="timeout" value="30" size="2">seconds</span>
+			</div>
+
+		</form>
+</div>
+		<div style="float: right; width:586; margin-left:auto; margin-right:auto; margin-top: 20;">	
+			Positive: <input type="checkbox" name="tweets" id="posTweet" value="posTweet" onclick="showTweets(this.value)" checked />
+			&nbsp&nbsp&nbsp&nbsp
+			Negative: <input type="checkbox" name="tweets" id="negTweet" value="negTweet" onclick="showTweets(this.value)" checked />
+			&nbsp&nbsp&nbsp&nbsp
+			Neutral: <input type="checkbox" name="tweets" id="neutTweet" value="neutTweet" onclick="showTweets(this.value)" checked />
+		<div id = "resultContent" style="width:586; margin-left:auto; margin-right:auto;">	
+		
+		</div>
+				</div>
+
+				</center>
+            </div>
+        
+
+<div id ="nums" style="display:none">
+</div>
+<div id ="errorDiv" style="display:none">
+</div>
+
+			
+</body>
+
+
+</html>
