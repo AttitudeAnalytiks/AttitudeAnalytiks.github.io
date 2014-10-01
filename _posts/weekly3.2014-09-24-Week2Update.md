@@ -3,7 +3,6 @@ layout: post
 title: Weekly Update 3
 ---
 
-
 ## What we Did
 
 **Tom**:  continued research and provided insight for the training of the classifers
@@ -20,7 +19,7 @@ Twitter provides a very rich Application Programming Interface (API).
 
 This interface is entirely web-based, meaning that programs connect to resources over the Internet to query the system, access data, and even control their account.
 
-You can read more about the Twitter API.
+You can read more about the Twitter API
 
 ### What to Do Next
 
