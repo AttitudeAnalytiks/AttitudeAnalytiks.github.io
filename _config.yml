@@ -28,5 +28,5 @@ pages_list:
   Archive: '/archive'
   Feed: '/atom.xml'
   Email: '/email'
-  WebApp:'/webapp'
+  
   
