@@ -7,7 +7,7 @@ title: Weekly Update 4
 
 ## What we Did
 
-**Tom**:  
+**Tom**:  crushed out some code academy for python! and looked at nltk
 **Kelly**: registered the application with Twitter in order to get access tokens, built a generic oauth module for interacting with the Twitter API
 
 **Logan**:  
