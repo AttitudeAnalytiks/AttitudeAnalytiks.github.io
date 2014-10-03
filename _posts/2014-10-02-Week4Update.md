@@ -10,7 +10,7 @@ title: Weekly Update 4
 **Tom**:  crushed out some code academy for python! and looked at nltk
 **Kelly**: registered the application with Twitter in order to get access tokens, built a generic oauth module for interacting with the Twitter API
 
-**Logan**:  
+**Logan**:  continued to work on the research paper due Wednesday
 
 ## Word of the Week
  
